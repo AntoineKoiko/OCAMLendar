@@ -1,0 +1,3 @@
+(library
+ (name myCalendarLib)
+ (modules employee meeting calendar command))

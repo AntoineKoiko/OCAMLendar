@@ -1,0 +1,4 @@
+(executable
+ (public_name myCalendar)
+ (name main)
+ (libraries myCalendarLib))
