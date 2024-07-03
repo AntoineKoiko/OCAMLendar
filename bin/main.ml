@@ -20,7 +20,9 @@ let rec main_loop (cal: calendar) : unit =
   try
     let input = input_line stdin in
     let cmd = parse_command input in
-    handle_command cmd cal |> main_loop
+    match handle_command cmd cal with
+    | Some cal -> main_loop cal
+    | None -> ()
  with
   | End_of_file -> ()
   | e -> raise e

@@ -74,6 +74,7 @@ let parse_command  (str: string) : command =
     | "invite" -> parse_invite_to_meetings words
     | "exclude" -> parse_exclude_to_meeting words
     | "cancel" -> parse_cancel_meets words
+    | "end" -> Quit
     | _ -> Error (Printf.sprintf "Unknown command: %s" fst_word)
 
 
@@ -116,16 +117,16 @@ let rec handle_cancel_meets (meet_ids: int list) (cal: calendar) : calendar =
     | [] -> cal
     | meet_id::tl -> cal_rm_meeting  cal  meet_id |> handle_cancel_meets tl
 
-let handle_command (com: command) (cal: calendar): calendar =
+let handle_command (com: command) (cal: calendar): calendar option =
     match com with
-    | Quit -> print_endline "Quit"; cal
-    | NewEmployee _ -> handle_new_employee com cal
-    | FireEmployyees ids -> handle_fire_employees ids cal
-    | InfoEmployees -> cal_display_employees cal; cal
-    | NewMeeting (place, date, ids) -> handle_new_meeting place date ids cal
-    | InfoMeetings -> cal_display_meetings cal; cal
-    | InviteToMeeting (meet_id, emp_ids) -> handle_invite_to_meet meet_id emp_ids cal
-    | ExcludeToMeeting (meet_id, emp_ids) -> handle_exlude_to_meet meet_id emp_ids cal
-    | CancelMeetings meet_ids -> handle_cancel_meets meet_ids cal
-    | Unknown -> print_endline "Unknown"; cal
-    | Error (str) -> print_endline (Printf.sprintf "Error: %s" str); cal
+    | NewEmployee _ -> Some (handle_new_employee com cal)
+    | FireEmployyees ids -> Some (handle_fire_employees ids cal)
+    | InfoEmployees -> cal_display_employees cal; Some cal
+    | NewMeeting (place, date, ids) -> Some (handle_new_meeting place date ids cal)
+    | InfoMeetings -> cal_display_meetings cal; Some cal
+    | InviteToMeeting (meet_id, emp_ids) -> Some (handle_invite_to_meet meet_id emp_ids cal)
+    | ExcludeToMeeting (meet_id, emp_ids) -> Some (handle_exlude_to_meet meet_id emp_ids cal)
+    | CancelMeetings meet_ids -> Some (handle_cancel_meets meet_ids cal)
+    | Unknown -> print_endline "Unknown"; Some cal
+    | Error (str) -> print_endline (Printf.sprintf "Error: %s" str); Some cal
+    | Quit -> None

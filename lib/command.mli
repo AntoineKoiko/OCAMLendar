@@ -13,7 +13,7 @@ type command =
     | Unknown
     | Error of string
 
-val handle_command: command -> calendar -> calendar
+val handle_command: command -> calendar -> calendar option
 
 val parse_command: string -> command
 
