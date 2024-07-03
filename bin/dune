@@ -1,4 +1,4 @@
 (executable
- (public_name myCalendar)
+ (public_name OCAMLendar)
  (name main)
  (libraries myCalendarLib))

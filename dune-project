@@ -1,26 +1,26 @@
 (lang dune 3.6)
 
-(name myCalendar)
+(name OCAMLendar)
 
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github AntoineKoiko/OCAMLendar))
 
-(authors "Author Name")
+(authors "AntoineKoiko")
 
-(maintainers "Maintainer Name")
+(maintainers "AntoineKoiko")
 
-(license LICENSE)
+(license MIT)
 
 (documentation https://url/to/documentation)
 
 (package
- (name myCalendar)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (name OCAMLendar)
+ (synopsis "A CLI to manage meetings and employees")
+ (description "OCMLendar is a command-line interface (CLI) application for managing employees and meetings, written in OCaml using the functional programming paradigm. This program allows you to add new employees, schedule meetings, invite or exclude employees from meetings, display information about employees and meetings, cancel meetings, and fire employees.")
  (depends ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (topics "CLI" your project)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
