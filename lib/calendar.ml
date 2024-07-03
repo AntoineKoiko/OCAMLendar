@@ -60,7 +60,9 @@ let cal_rm_participant ((emps, meets): calendar) (emp_id: int) (meet_id: int): c
 
 let cal_display_employees (cal: calendar) : unit =
     let (emps, _) = cal in
-    iter (fun (emp: employee) -> print_endline (emp_to_string emp)) emps
+    print_endline "*********\n\tEMPLOYEES";
+    iter (fun (emp: employee) -> print_endline (emp_to_string emp)) emps;
+    print_endline "*********"
 
 let cal_get_emp_max_id ((emps, _): calendar) : int =
     match emps with
@@ -74,5 +76,8 @@ let cal_get_meet_max_id ((_, meets): calendar) : int =
     | [] -> 0
     | _ -> fold_left (fun acc (meet: meeting) -> max acc (meet_get_id meet)) 0 meets
 
-let cal_display_meetings ((_, meets): calendar) =
-    iter (fun (meet: meeting) -> print_endline (meet_to_string meet)) meets
+let cal_display_meetings ((_, meets): calendar) : unit =
+    print_endline "*********\n\tMEETIGNS";
+    iter (fun (meet: meeting) -> print_endline (meet_to_string meet)) meets;
+    print_endline "*********"
+

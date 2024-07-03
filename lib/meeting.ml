@@ -27,4 +27,4 @@ let meet_rm_participant (meet: meeting) (emp_id: int) =
 let meet_to_string (meet: meeting) =
     let (id, day, zipcode, participants) = meet in
     let str_parts = List.map string_of_int participants in
-    Printf.sprintf "Meeting %d: %s %s \n[%s]" id day zipcode (String.concat ", " str_parts)
+    Printf.sprintf "Meeting %d: %s %s \n [%s]" id day zipcode (String.concat ", " str_parts)
