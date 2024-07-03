@@ -12,6 +12,7 @@ type command =
     | Quit
     | Unknown
     | Error of string
+    | Help
 
 val handle_command: command -> calendar -> calendar option
 

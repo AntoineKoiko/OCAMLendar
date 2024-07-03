@@ -1,6 +1,7 @@
 open Calendar
 open Employee
 open Meeting
+open Utils
 
 type command =
     | FireEmployyees of int list (* employees ids*)
@@ -14,6 +15,7 @@ type command =
     | Quit
     | Unknown
     | Error of string
+    | Help
 
 
 (* PARSE  *)
@@ -75,7 +77,8 @@ let parse_command  (str: string) : command =
     | "exclude" -> parse_exclude_to_meeting words
     | "cancel" -> parse_cancel_meets words
     | "end" -> Quit
-    | _ -> Error (Printf.sprintf "Unknown command: %s" fst_word)
+    | "help" -> Help
+    | _ -> Error (Printf.sprintf "Unknown command: %s, type \'help` for more info" fst_word)
 
 
 (* HANDLE  *)
@@ -130,3 +133,4 @@ let handle_command (com: command) (cal: calendar): calendar option =
     | Unknown -> print_endline "Unknown"; Some cal
     | Error (str) -> print_endline (Printf.sprintf "Error: %s" str); Some cal
     | Quit -> None
+    | Help -> display_help (); Some cal
