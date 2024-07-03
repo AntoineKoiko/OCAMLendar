@@ -8,6 +8,7 @@ type command =
     | InfoMeetings
     | InviteToMeeting of int * int list (* meet_id * emp_ids*)
     | ExcludeToMeeting of int * int list (*meet_id * empids*)
+    | CancelMeetings of int list (*meet_ids*)
     | Quit
     | Unknown
     | Error of string

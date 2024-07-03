@@ -10,6 +10,7 @@ type command =
     | InfoMeetings
     | InviteToMeeting of int * int list (* meet_id * emp_id*)
     | ExcludeToMeeting of int * int list (*meet_id * empids*)
+    | CancelMeetings of int list (*meet_ids*)
     | Quit
     | Unknown
     | Error of string
@@ -56,6 +57,10 @@ let parse_exclude_to_meeting (cmds: string list) : command =
         ExcludeToMeeting (meet_id, emp_ids)
 
 
+let parse_cancel_meets (cmds: string list) : command =
+    let str_ids = List.tl cmds in
+    CancelMeetings (List.map int_of_string str_ids)
+
 let parse_command  (str: string) : command =
     let words = String.split_on_char ' ' str in
     let fst_word = List.hd words in
@@ -68,6 +73,7 @@ let parse_command  (str: string) : command =
     | "info_meetings" -> InfoMeetings
     | "invite" -> parse_invite_to_meetings words
     | "exclude" -> parse_exclude_to_meeting words
+    | "cancel" -> parse_cancel_meets words
     | _ -> Error (Printf.sprintf "Unknown command: %s" fst_word)
 
 
@@ -104,6 +110,12 @@ let rec handle_exlude_to_meet (meet_id: int) (emp_ids: int list) (cal: calendar)
     | [] -> cal
     | emp_id::tl -> cal_exclude_employee_to_meeting  cal  emp_id meet_id |> handle_exlude_to_meet meet_id tl
 
+
+let rec handle_cancel_meets (meet_ids: int list) (cal: calendar) : calendar =
+    match meet_ids with
+    | [] -> cal
+    | meet_id::tl -> cal_rm_meeting  cal  meet_id |> handle_cancel_meets tl
+
 let handle_command (com: command) (cal: calendar): calendar =
     match com with
     | Quit -> print_endline "Quit"; cal
@@ -114,5 +126,6 @@ let handle_command (com: command) (cal: calendar): calendar =
     | InfoMeetings -> cal_display_meetings cal; cal
     | InviteToMeeting (meet_id, emp_ids) -> handle_invite_to_meet meet_id emp_ids cal
     | ExcludeToMeeting (meet_id, emp_ids) -> handle_exlude_to_meet meet_id emp_ids cal
+    | CancelMeetings meet_ids -> handle_cancel_meets meet_ids cal
     | Unknown -> print_endline "Unknown"; cal
     | Error (str) -> print_endline (Printf.sprintf "Error: %s" str); cal
