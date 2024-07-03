@@ -11,9 +11,13 @@ open Calendar
  *)
 
  let rec main_loop (cal: calendar) : unit =
-   let input = input_line stdin in
+  try
+    let input = input_line stdin in
     let cmd = parse_command input in
     handle_command cmd cal |> main_loop
+ with
+ | End_of_file -> ()
+  | e -> raise e
 
 let () =
   main_loop cal_init
