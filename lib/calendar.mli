@@ -3,6 +3,10 @@ open Meeting
 
 exception CalendarNotIplemented of string
 
+exception CalendarMeetingNotExist of int * meeting list
+
+exception CalendarEmployeeNotExist of int * employee list
+
 type calendar = employee list * meeting list
 
 val cal_init: calendar

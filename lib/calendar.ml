@@ -5,6 +5,11 @@ open List
 
 exception CalendarNotIplemented of string
 
+exception CalendarMeetingNotExist of int * meeting list
+
+exception CalendarEmployeeNotExist of int * employee list
+
+
 type calendar = employee list * meeting list
 
 let cal_init = ([], [])
@@ -30,16 +35,15 @@ let cal_meeting_exist ((_, meets): calendar) (meet_id: int): bool =
     exists (fun (meet: meeting) -> meet_get_id meet = meet_id) meets
 
 
-let cal_invite_employee_to_meeting (c: calendar) (emp_id: int) (meet_id: int): calendar =
-    match cal_employee_exist c emp_id with
-    | false -> raise (CalendarNotIplemented "Employee does not exist")
-    | true -> match cal_meeting_exist c meet_id  with
-        | false -> raise (CalendarNotIplemented "Meeting does not exist")
+let cal_invite_employee_to_meeting ((emps, meets): calendar) (emp_id: int) (meet_id: int): calendar =
+    match cal_employee_exist (emps, meets) emp_id with
+    | false -> raise (CalendarEmployeeNotExist  (emp_id, emps))
+    | true -> match cal_meeting_exist (emps, meets) meet_id  with
+        | false -> raise (CalendarMeetingNotExist (meet_id, meets))
         | true ->
-            let (emps, meets) = c in
             let meet = find (fun (meet: meeting) -> meet_get_id meet = meet_id) meets in
             let meet = meet_add_participant meet emp_id in
-            let filtered_meets = cal_rm_meeting c meet_id |> snd in
+            let filtered_meets = cal_rm_meeting (emps, meets) meet_id |> snd in
             (emps, meet::filtered_meets)
 
 
