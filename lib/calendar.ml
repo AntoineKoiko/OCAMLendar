@@ -47,6 +47,17 @@ let cal_invite_employee_to_meeting ((emps, meets): calendar) (emp_id: int) (meet
             (emps, meet::filtered_meets)
 
 
+let cal_exclude_employee_to_meeting ((emps, meets): calendar) (emp_id: int) (meet_id: int): calendar =
+    match cal_employee_exist (emps, meets) emp_id with
+    | false -> raise (CalendarEmployeeNotExist  (emp_id, emps))
+    | true -> match cal_meeting_exist (emps, meets) meet_id  with
+        | false -> raise (CalendarMeetingNotExist (meet_id, meets))
+        | true ->
+            let meet = find (fun (meet: meeting) -> meet_get_id meet = meet_id) meets in
+            let meet = meet_rm_participant meet emp_id in
+            let filtered_meets = cal_rm_meeting (emps, meets) meet_id |> snd in
+            (emps, meet::filtered_meets)
+
 let cal_fire_employee ((emps, meets): calendar) (emp_id: int) : calendar =
     let filtered_emps = cal_rm_employee (emps, meets) emp_id |> fst in
     let filter_part (meet: meeting) = Meeting.meet_rm_participant meet emp_id in
