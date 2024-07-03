@@ -85,7 +85,7 @@ let handle_new_meeting (place: string) (date: string) (ids: int list) (cal: cale
 let rec handle_invite_to_meet (meet_id: int) (emp_ids: int list) (cal: calendar) =
     match emp_ids with
     | [] -> cal
-    | id::tl -> cal_invite_employee_to_meeting  cal meet_id id  |> handle_invite_to_meet meet_id tl
+    | emp_id::tl -> cal_invite_employee_to_meeting  cal  emp_id meet_id |> handle_invite_to_meet meet_id tl
 
 let handle_command (com: command) (cal: calendar): calendar =
     match com with
