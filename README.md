@@ -1,5 +1,10 @@
 # OCMLendar
 
+![OCaml](https://img.shields.io/badge/OCaml-%23E98407.svg?style=for-the-badge&logo=ocaml&logoColor=white)
+
+
+## Description
+
 OCMLendar is a command-line interface (CLI) application for managing employees and meetings, written in OCaml using the functional programming paradigm. This program allows you to add new employees, schedule meetings, invite or exclude employees from meetings, display information about employees and meetings, cancel meetings, and fire employees.
 
 ## Features
@@ -32,7 +37,7 @@ dune build
 Run the project:
 
 ```sh
-dune exec
+dune exec OCAMLendar
 ```
 
 Explore the commands by typing:
@@ -44,25 +49,25 @@ help
 
 Commands
 
-    new_employee name forename job zipcode
+- new_employee name forename job zipcode
         Add a new employee with the specified name, forename, job, and zipcode.
-    new_meeting place date idEmployee1 idEmployee2 [idEmployee3 ...]
+- new_meeting place date idEmployee1 idEmployee2 [idEmployee3 ...]
         Schedule a new meeting at the specified place and date, and invite employees by their ids.
-    invite idMeeting idEmployee1 [idEmployee2 ...]
+- invite idMeeting idEmployee1 [idEmployee2 ...]
         Invite additional employees to an existing meeting by the meeting id and employee ids.
-    exclude idMeeting idEmployee1 [idEmployee2 ...]
+- exclude idMeeting idEmployee1 [idEmployee2 ...]
         Exclude employees from an existing meeting by the meeting id and employee ids.
-    info_employees sortByE [idEmployee1 ...]
+- info_employees sortByE [idEmployee1 ...]
         Display information about employees, optionally sorted by the specified criterion.
-    info_meetings sortByM [idMeeting1 ...]
+- info_meetings sortByM [idMeeting1 ...]
         Display information about meetings, optionally sorted by the specified criterion.
-    cancel idMeeting1 [idMeeting2 ...]
+- cancel idMeeting1 [idMeeting2 ...]
         Cancel one or more meetings by their ids.
-    fire idEmployee1 [idEmployee2 ...]
+- fire idEmployee1 [idEmployee2 ...]
         Fire one or more employees by their ids.
-    end
+- end
         End the program.
-    help
+- help
         Display this help text.
 
 ## Licence
