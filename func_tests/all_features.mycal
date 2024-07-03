@@ -1,0 +1,9 @@
+new_employee Doe John PDG 35
+new_employee Koiko Antoine CEO 35
+new_employee Vinga Sarah CMO 35
+info_employees
+new_meeting EPITECH Lundi 1 2
+info_meetings
+fire 1
+info_employees
+info_meetings
