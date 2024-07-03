@@ -20,6 +20,7 @@ val cal_employee_exist : calendar -> int -> bool
 val cal_meeting_exist : calendar -> int -> bool
 
 val cal_invite_employee_to_meeting: calendar -> int -> int -> calendar
+(* cal, meet_id, emp_id *)
 
 val  cal_fire_employee : calendar -> int -> calendar
 (* Remove employee from employee list and from meetings where he was invited *)

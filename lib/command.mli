@@ -6,8 +6,10 @@ type command =
     | InfoEmployees
     | NewMeeting of string * string * int list (* place (zipcode) * date * participant id's *)
     | InfoMeetings
+    | InviteToMeeting of int * int list (* meet_id * emp_id*)
     | Quit
     | Unknown
+    | Error of string
 
 val handle_command: command -> calendar -> calendar
 

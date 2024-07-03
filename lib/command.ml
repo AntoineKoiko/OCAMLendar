@@ -8,8 +8,10 @@ type command =
     | InfoEmployees
     | NewMeeting of string * string * int list (* place (zipcode) * date * participant id's *)
     | InfoMeetings
+    | InviteToMeeting of int * int list (* meet_id * emp_id*)
     | Quit
     | Unknown
+    | Error of string
 
 
 (* PARSE  *)
@@ -35,6 +37,14 @@ let parse_new_meeting (cmds: string list): command =
             let ids = List.map int_of_string str_ids in
             NewMeeting (place, date, ids)
 
+let parse_invite_to_meetings (cmds: string list) : command =
+    match List.length cmds with
+    | n when n < 3 -> Error (Printf.sprintf "Expected: at least 3 args | Actual: %d" n)
+    | _ -> let meet_id = List.nth cmds 1 |> int_of_string in
+            let emp_str_ids = List.tl cmds |> List.tl in
+            let emp_ids = List.map int_of_string emp_str_ids in
+            InviteToMeeting (meet_id, emp_ids)
+
 let parse_command  (str: string) : command =
     let words = String.split_on_char ' ' str in
     let fst_word = List.hd words in
@@ -45,7 +55,8 @@ let parse_command  (str: string) : command =
     | "fire" -> parse_fire_employees words
     | "new_meeting" -> parse_new_meeting words
     | "info_meetings" -> InfoMeetings
-    | _ -> Unknown
+    | "invite" -> parse_invite_to_meetings words
+    | _ -> Error (Printf.sprintf "Unknown command: %s" fst_word)
 
 
 (* HANDLE  *)
@@ -71,6 +82,11 @@ let handle_new_meeting (place: string) (date: string) (ids: int list) (cal: cale
     cal_add_meeting cal meet
 
 
+let rec handle_invite_to_meet (meet_id: int) (emp_ids: int list) (cal: calendar) =
+    match emp_ids with
+    | [] -> cal
+    | id::tl -> cal_invite_employee_to_meeting  cal meet_id id  |> handle_invite_to_meet meet_id tl
+
 let handle_command (com: command) (cal: calendar): calendar =
     match com with
     | Quit -> print_endline "Quit"; cal
@@ -79,4 +95,6 @@ let handle_command (com: command) (cal: calendar): calendar =
     | InfoEmployees -> cal_display_employees cal; cal
     | NewMeeting (place, date, ids) -> handle_new_meeting place date ids cal
     | InfoMeetings -> cal_display_meetings cal; cal
+    | InviteToMeeting (meet_id, emp_ids) -> handle_invite_to_meet meet_id emp_ids cal
     | Unknown -> print_endline "Unknown"; cal
+    | Error (str) -> print_endline (Printf.sprintf "Error: %s" str); cal
